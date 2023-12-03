@@ -16,13 +16,12 @@ post '/slack/events' do
       if event['type'] == 'reaction_added'
         # リアクションが追加されたことを処理
         puts "リアクションが追加されました: #{event}"
-
-        # 応答の内容をここに設定できます（必要に応じて）
-        "Reaction added: #{event['reaction']}"
+        # 応答の内容を設定
+        return "Reaction added: #{event['reaction']}"
       else
-        # その他のイベントタイプについての処理（必要に応じて）
+        # その他のイベントタイプについての処理
+        # 必要に応じて別のレスポンスを設定
       end
-
       status 200
     else
       # 未知のイベントタイプについての処理

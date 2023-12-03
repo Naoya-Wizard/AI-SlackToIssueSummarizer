@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'rack/test'
-require_relative '../app.rb' # Sinatraアプリケーションファイルへのパス
+require_relative '../slack_reaction_handler.rb'
 
 describe 'Slack Events API' do
   include Rack::Test::Methods
