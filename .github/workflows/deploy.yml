@@ -1,0 +1,28 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - main  # またはデプロイしたいブランチを指定
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.2' # プロジェクトのRubyバージョンに合わせてください
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12 # Herokuデプロイ用のGitHub Actions
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_email: 'your-email@example.com' # Herokuアカウントのメールアドレス
