@@ -3,10 +3,10 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - main  # またはデプロイしたいブランチを指定
+      - main  # デプロイしたいブランチ
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,6 @@ jobs:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
         heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
         heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        usedocker: false # Dockerを使用する場合はtrueに設定
+        branch: main # デプロイするブランチ
+        dontuseforce: true # 強制プッシュを避けるためにtrueに設定
