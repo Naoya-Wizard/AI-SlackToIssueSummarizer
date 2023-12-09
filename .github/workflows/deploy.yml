@@ -24,7 +24,7 @@ jobs:
       run: git remote -v
 
     - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.12.14 # Herokuデプロイ用のGitHub Actions
+      uses: akhileshns/heroku-deploy@v3.11.10 # Herokuデプロイ用のGitHub Actions
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
         heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
