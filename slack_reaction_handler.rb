@@ -4,7 +4,7 @@ require 'json'
 post '/slack/events' do
   begin
     request_data = JSON.parse(request.body.read)
-
+    puts request_data
     case request_data['type']
     when 'url_verification'
       # SlackのURL検証に応答
@@ -16,6 +16,7 @@ post '/slack/events' do
       if event['type'] == 'reaction_added'
         # リアクションが追加されたことを処理
         puts "リアクションが追加されました: #{event}"
+        puts "hello"
         # 応答の内容を設定
         return "Reaction added: #{event['reaction']}"
       else
