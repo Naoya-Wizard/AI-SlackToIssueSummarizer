@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require './NotionPagePoster'
 
 post '/slack/events' do
   begin
@@ -16,7 +17,7 @@ post '/slack/events' do
       if event['type'] == 'reaction_added'
         # リアクションが追加されたことを処理
         puts "リアクションが追加されました: #{event}"
-        puts "hello"
+        NotionPagePoster.post_to_notion("Your Page Title", "Your main content here.")
         # 応答の内容を設定
         return "Reaction added: #{event['reaction']}"
       else
