@@ -1,0 +1,7 @@
+valid_reactions:
+  - user: "U05NBR1NQ06"
+    reaction: "coffee"
+    notion_page_id: "e0f0b5be359f4912a3c6855fe54f0e6d"
+  - user: "U05NMFRG29J"
+    reaction: "coffee"
+    notion_page_id: "e0f0b5be359f4912a3c6855fe54f0e6d"

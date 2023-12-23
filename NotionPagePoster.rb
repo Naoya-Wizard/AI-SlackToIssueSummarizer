@@ -3,9 +3,8 @@ require 'json'
 require 'uri'
 
 module NotionPagePoster
-  def self.post_to_notion(title, content)
+  def self.post_to_notion(page_id, title, content)
     token = ENV['NOTION-INTEGRATION-TOKEN']
-    page_id = 'e0f0b5be359f4912a3c6855fe54f0e6d'
     headers = {
       "Authorization" => "Bearer #{token}",
       "Content-Type" => "application/json",
