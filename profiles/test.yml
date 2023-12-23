@@ -1,0 +1,4 @@
+valid_reactions:
+  - user: "U123456"
+    reaction: "thumbs_up"
+    notion_page_id: "abcd1234"

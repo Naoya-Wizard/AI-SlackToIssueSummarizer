@@ -31,13 +31,13 @@ post '/slack/events' do
         # リアクションが追加されたことを処理
         puts "リアクションが追加されました: #{event}"
 
-        valid_reaction = config['valid_reactions'].find do |entry|
+        valid_reaction = all_profiles['valid_reactions'].find do |entry|
           entry['user'] == event['user'] && entry['reaction'] == event['reaction']
         end
 
         if valid_reaction
           notion_page_id = valid_reaction['notion_page_id']
-          NotionPagePoster.post_to_notion("Your Page Title", "Your main content here.")
+          NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", "Your main content here.")
           return "Notion page created for reaction: #{event['reaction']}"
         end
       end

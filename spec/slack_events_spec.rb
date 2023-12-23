@@ -9,6 +9,11 @@ describe 'Slack Events API' do
     Sinatra::Application
   end
 
+  before do
+    # Notion APIの呼び出しをモック
+    allow(NotionPagePoster).to receive(:post_to_notion)
+  end
+
   context 'POST /slack/events' do
     let(:url_verification_body) do
       {
@@ -24,17 +29,21 @@ describe 'Slack Events API' do
     end
 
     context 'with valid event callback' do
-      let(:event_callback_body) do
+      let(:valid_reaction_event_body) do
         {
           type: 'event_callback',
-          event: { type: 'reaction_added', reaction: 'thumbsup' }
+          event: { type: 'reaction_added', user: 'U123456', reaction: 'thumbs_up' }
         }.to_json
       end
 
-      it 'handles reaction_added events' do
-        post '/slack/events', event_callback_body, { 'CONTENT_TYPE' => 'application/json' }
+      it 'triggers post_to_notion on valid reaction' do
+        post '/slack/events', valid_reaction_event_body, { 'CONTENT_TYPE' => 'application/json' }
+
+        # 追加: レスポンスボディを出力
+        puts last_response.body
+
+        expect(NotionPagePoster).to have_received(:post_to_notion).once
         expect(last_response).to be_ok
-        expect(last_response.body).to include('Reaction added: thumbsup')
       end
     end
 
