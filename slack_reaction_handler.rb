@@ -42,7 +42,7 @@ post '/slack/events' do
         end
 
         notion_page_id = valid_reaction['notion_page_id']
-        NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", "Your main content here.")
+        NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", messages)
         return "Notion page created for reaction: #{event['reaction']}"
       end
     end
