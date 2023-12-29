@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'yaml'
 require './NotionPagePoster'
-require './Slack_message_fetcher'
+require './slack_message_fetcher'
 
 # profiles フォルダ内の全ての YAML ファイルを読み込む
 profile_files = Dir[File.join(File.dirname(__FILE__), 'profiles', '*.yml')]
