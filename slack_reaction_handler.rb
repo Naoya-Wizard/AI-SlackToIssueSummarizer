@@ -39,11 +39,12 @@ post '/slack/events' do
           channel_id = event['item']['channel']
           timestamp = event['item']['ts']
           messages = Slack_message_fetcher.fetch_all_replies(channel_id, timestamp)
-          puts messages.map { |message| message['text'] }.join("\n---\n")
+          messages_text = messages.map { |message| message['text'] }.join("\n---\n")
+          puts messages_text
         end
 
         notion_page_id = valid_reaction['notion_page_id']
-        NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", messages.map { |message| message['text'] }.join("\n---\n"))
+        NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", messages_text)
         return "Notion page created for reaction: #{event['reaction']}"
       end
     end
