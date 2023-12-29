@@ -16,40 +16,43 @@ all_profiles['valid_reactions'].each do |reaction_profile|
 end
 
 post '/slack/events' do
-  begin
-    request_data = JSON.parse(request.body.read)
-    puts request_data
-    case request_data['type']
-    when 'url_verification'
-      # SlackのURL検証に応答
-      request_data['challenge']
+  request_data = JSON.parse(request.body.read)
 
-    when 'event_callback'
-      event = request_data['event']
+  case request_data['type']
+  when 'url_verification'
+    request_data['challenge']
 
-      if event['type'] == 'reaction_added'
-        # リアクションが追加されたことを処理
-        puts "リアクションが追加されました: #{event}"
+  when 'event_callback'
+    event = request_data['event']
 
-        valid_reaction = all_profiles['valid_reactions'].find do |entry|
-          entry['user'] == event['user'] && entry['reaction'] == event['reaction']
-        end
+    if event['type'] == 'reaction_added'
+      puts "リアクションが追加されました: #{event}"
 
-        if valid_reaction
-          notion_page_id = valid_reaction['notion_page_id']
-          NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", "Your main content here.")
-          return "Notion page created for reaction: #{event['reaction']}"
-        end
+      valid_reaction = all_profiles['valid_reactions'].find do |entry|
+        entry['user'] == event['user'] && entry['reaction'] == event['reaction']
       end
-      status 200
-    else
-      # 未知のイベントタイプについての処理
-      status 400
-      "Unknown event type"
+
+      if valid_reaction
+        # ここでSlack APIを呼び出す
+        if event['item'] && event['item']['type'] == 'message'
+          channel_id = event['item']['channel']
+          timestamp = event['item']['ts']
+          messages = Slack_message_fetcher.fetch_all_replies(channel_id, timestamp)
+          puts messages.map { |message| message['text'] }.join("\n---\n")
+        end
+
+        notion_page_id = valid_reaction['notion_page_id']
+        NotionPagePoster.post_to_notion(notion_page_id, "Your Page Title", messages)
+        return "Notion page created for reaction: #{event['reaction']}"
+      end
     end
-  rescue JSON::ParserError
-    # 無効なJSONデータを受け取った場合のエラー処理
+
+    status 200
+  else
     status 400
-    "Invalid JSON format"
+    "Unknown event type"
   end
+rescue JSON::ParserError
+  status 400
+  "Invalid JSON format"
 end
