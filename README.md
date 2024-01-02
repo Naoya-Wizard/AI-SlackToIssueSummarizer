@@ -1,5 +1,5 @@
 
-## CI and Deploy to Heroku Actionsの説明
+## Actionsの説明（CI and Deploy to Heroku）
 
 このActionsは「CI and Deploy to Heroku」という名前で、主に二つのジョブ、`test` と `deploy` から構成されています。
 
