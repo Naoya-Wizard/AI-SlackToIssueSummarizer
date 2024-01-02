@@ -1,7 +1,7 @@
 
 ## Actionsの説明（CI and Deploy to Heroku）
 
-このActionsは「CI and Deploy to Heroku」という名前で、主に二つのジョブ、`test` と `deploy` から構成されています。
+このActionsは、主に二つのジョブ、`test` と `deploy` から構成されています。
 
 ### トリガー
 - `on:`: このワークフローは、`main` ブランチへのプッシュまたはプルリクエストがある場合にトリガーされます。
