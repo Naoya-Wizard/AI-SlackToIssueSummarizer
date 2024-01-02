@@ -39,10 +39,38 @@ describe 'Slack Events API' do
       it 'triggers post_to_notion on valid reaction' do
         post '/slack/events', valid_reaction_event_body, { 'CONTENT_TYPE' => 'application/json' }
 
-        # 追加: レスポンスボディを出力
         puts last_response.body
 
         expect(NotionPagePoster).to have_received(:post_to_notion).once
+        expect(last_response).to be_ok
+      end
+    end
+
+    context 'with valid event callback and message item' do
+      let(:valid_reaction_event_with_message_body) do
+        {
+          type: 'event_callback',
+          event: {
+            type: 'reaction_added',
+            user: 'U123456',
+            reaction: 'thumbs_up',
+            item: { type: 'message', channel: 'C123456', ts: '1234567890.123456' }
+          }
+        }.to_json
+      end
+
+      before do
+        # Slackメッセージ取得のモック
+        allow(Slack_message_fetcher).to receive(:fetch_all_replies)
+          .and_return([{ 'text' => 'Message 1' }, { 'text' => 'Message 2' }])
+      end
+
+      it 'fetches messages and triggers post_to_notion with combined text' do
+        post '/slack/events', valid_reaction_event_with_message_body, { 'CONTENT_TYPE' => 'application/json' }
+
+        expect(Slack_message_fetcher).to have_received(:fetch_all_replies).with('C123456', '1234567890.123456')
+        expect(NotionPagePoster).to have_received(:post_to_notion)
+          .with(anything(), anything(), "Message 1\n---\nMessage 2")
         expect(last_response).to be_ok
       end
     end
