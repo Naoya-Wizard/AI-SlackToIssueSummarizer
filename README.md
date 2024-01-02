@@ -1,7 +1,7 @@
 
-## CI and Deploy to Herokuワークフローの説明
+## CI and Deploy to Heroku Actionsの説明
 
-このGitHub Actionsワークフローは「CI and Deploy to Heroku」という名前で、主に二つのジョブ、`test` と `deploy` から構成されています。
+このActionsは「CI and Deploy to Heroku」という名前で、主に二つのジョブ、`test` と `deploy` から構成されています。
 
 ### トリガー
 - `on:`: このワークフローは、`main` ブランチへのプッシュまたはプルリクエストがある場合にトリガーされます。
